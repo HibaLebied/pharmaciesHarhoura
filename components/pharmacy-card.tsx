@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import CallButton from "./CallButton"; // Nouveau Client Component
 import DirectionsButton from "./DirectionsButton"; // Nouveau Client Component
+import Link from "next/link";
 
 interface PharmacyCardProps {
   pharmacy: Pharmacy;
@@ -96,9 +97,29 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
           latitude={pharmacy.latitude}
           longitude={pharmacy.longitude}
         />
-        {pharmacy.phone && <CallButton phone={pharmacy.phone} />}
 
-        <Dialog>
+        <Link
+          href={`/${pharmacy.id}`}
+          className="flex items-center gap-1 px-3 py-2 rounded-md border text-sm text-gray-700 hover:bg-gray-100"
+        >
+          <span>Voir plus</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            />
+          </svg>
+        </Link>
+
+        {/* <Dialog>
           <DialogTrigger asChild>
             <button className="flex items-center gap-1 px-3 py-2 border rounded-md text-sm">
               <Clock className="h-4 w-4 mr-1" />
@@ -152,7 +173,7 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
               )}
             </div>
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </CardFooter>
     </Card>
   );
