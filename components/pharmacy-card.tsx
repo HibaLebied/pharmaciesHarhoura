@@ -23,6 +23,7 @@ import {
 import CallButton from "./CallButton"; // Nouveau Client Component
 import DirectionsButton from "./DirectionsButton"; // Nouveau Client Component
 import Link from "next/link";
+import ItineraryButton from "./ItineraryButton";
 
 interface PharmacyCardProps {
   pharmacy: Pharmacy;
@@ -93,7 +94,7 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
 
       <CardFooter className="pt-3 border-t flex gap-2">
         {/* Boutons déplacés dans des Client Components */}
-        <DirectionsButton
+        <ItineraryButton
           latitude={pharmacy.latitude}
           longitude={pharmacy.longitude}
         />

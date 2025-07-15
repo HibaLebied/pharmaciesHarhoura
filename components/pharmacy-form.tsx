@@ -65,7 +65,7 @@ function formatOpeningHoursForSave(
   days.forEach((day, i) => {
     const value = hours[day.key];
     if (value.closed || value.intervals.length === 0) {
-      result[dayKeys[i]] = { closed: true };
+      result[dayKeys[i]] = []; // 👈 plus de { closed: true }
     } else {
       result[dayKeys[i]] = value.intervals;
     }

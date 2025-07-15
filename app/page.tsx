@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PharmacyStats } from "@/components/pharmacy-stats";
+import NearestPharmacyButton from "@/components/NearestPharmacyButton";
 
 export const metadata = {
   title: "Pharmacies Harhoura - Horaires & Localisation en temps réel",
@@ -90,6 +91,8 @@ export default function HomePage() {
                   </Button>
                 </Link>
               </div>
+              <NearestPharmacyButton />
+
               <div className="flex items-center">
                 <Clock className="h-4 w-4 mr-1" />
                 <span>Statut en temps réel</span>

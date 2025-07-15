@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { MapPin } from "lucide-react";
 import {
   DropdownMenu,
+  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Map } from "lucide-react";
 
 interface ItineraryButtonProps {
   latitude: number;
@@ -26,13 +26,13 @@ export default function ItineraryButton({
   const wazeUrl = `https://waze.com/ul?ll=${latitude},${longitude}&navigate=yes`;
 
   useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor;
+    const userAgent = navigator.userAgent || navigator.vendor || "";
     if (/iPad|iPhone|iPod/.test(userAgent)) {
       setPreferredMap("apple");
     } else if (/android/i.test(userAgent)) {
       setPreferredMap("google");
     } else {
-      setPreferredMap("menu"); // 🖥️ Desktop fallback
+      setPreferredMap("menu"); // desktop: menu déroulant
     }
   }, []);
 
@@ -44,17 +44,31 @@ export default function ItineraryButton({
     }
   };
 
-  return preferredMap !== "menu" ? (
-    <Button onClick={openPreferredMap}>
-      <Map className="h-5 w-5 mr-2" />
-      Ouvrir dans {preferredMap === "apple" ? "Apple Maps" : "Google Maps"}
-    </Button>
-  ) : (
+  if (preferredMap !== "menu") {
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={openPreferredMap}
+        className="flex-1 flex items-center justify-center gap-1"
+      >
+        <MapPin className="h-4 w-4" />
+        Itinéraire
+      </Button>
+    );
+  }
+
+  // Menu déroulant desktop
+  return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>
-          <Map className="h-5 w-5 mr-2" />
-          Choisir l’application
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1 flex items-center justify-center gap-1"
+        >
+          <MapPin className="h-4 w-4" />
+          Itinéraire
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -63,7 +77,7 @@ export default function ItineraryButton({
             href={googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full"
+            className="w-full block"
           >
             Google Maps
           </a>
@@ -73,7 +87,7 @@ export default function ItineraryButton({
             href={appleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full"
+            className="w-full block"
           >
             Apple Maps
           </a>
@@ -83,7 +97,7 @@ export default function ItineraryButton({
             href={wazeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full"
+            className="w-full block"
           >
             Waze
           </a>
