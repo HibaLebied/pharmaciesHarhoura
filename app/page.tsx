@@ -1,25 +1,16 @@
 import { Suspense } from "react";
 import { PharmaciesList } from "@/components/pharmacies-list";
-import { PharmaciesMap } from "@/components/pharmacies-map";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Cross,
-  Building2,
-  MapPin,
-  List,
-  Clock,
-  Phone,
-  Settings,
-} from "lucide-react";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Cross, Clock, Phone, Settings, Navigation } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PharmacyStats } from "@/components/pharmacy-stats";
 import NearestPharmacyButton from "@/components/NearestPharmacyButton";
+import HeroButton from "@/components/HeroButton";
 
 export const metadata = {
   title: "Pharmacies Harhoura - Horaires & Localisation en temps réel",
   description:
-    "Consultez la liste et la carte des pharmacies de Harhoura avec horaires d'ouverture en temps réel, localisation précise et contacts directs.",
+    "Consultez la liste des pharmacies de Harhoura avec horaires d'ouverture en temps réel, localisation précise et contacts directs.",
   keywords: [
     "pharmacies Harhoura",
     "pharmacie de garde",
@@ -34,7 +25,7 @@ export const metadata = {
   openGraph: {
     title: "Pharmacies Harhoura",
     description:
-      "Trouvez rapidement les pharmacies ouvertes à Harhoura. Carte interactive, horaires en temps réel et contacts.",
+      "Trouvez rapidement les pharmacies ouvertes à Harhoura. Liste complète avec horaires en temps réel et contacts.",
     url: "https://harhoura.ma",
     siteName: "Pharmacies Harhoura",
     images: [
@@ -52,7 +43,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Pharmacies Harhoura",
     description:
-      "Trouvez les pharmacies ouvertes à Harhoura. Liste et carte interactive avec horaires mis à jour.",
+      "Trouvez les pharmacies ouvertes à Harhoura. Liste complète avec horaires mis à jour.",
     images: ["https://harhoura.ma/og-image.png"],
     creator: "@harhoura_ma",
   },
@@ -67,39 +58,42 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-6">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Titre principal (toujours visible) */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-800 rounded-lg flex items-center justify-center">
-                <Cross className="h-5 w-5 text-white" />
+            {/* Logo + Titre */}
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-emerald-500 rounded-lg flex items-center justify-center">
+                <Cross className="w-6 h-6 text-white" />
               </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">
+                  Pharmacies Harhoura
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Trouvez votre pharmacie rapidement
+                </p>
+              </div>
+            </Link>
 
-              <h1 className="text-2xl font-bold text-green-800">
-                Pharmacies Harhoura
-              </h1>
-            </div>
-
-            {/* Sous-texte et actions (cachés en mobile) */}
-            <div className="hidden md:flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-gray-600">
+            {/* Actions - cachées sur mobile */}
+            <div className="hidden md:flex items-center space-x-6">
               <div className="flex items-center">
                 <Link href="/admin">
-                  <Button variant="outline" size="sm">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Configuration
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs sm:text-sm"
+                  >
+                    <Settings className="h-4 w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Configuration</span>
                   </Button>
                 </Link>
               </div>
-              <NearestPharmacyButton />
 
               <div className="flex items-center">
                 <Clock className="h-4 w-4 mr-1" />
                 <span>Statut en temps réel</span>
-              </div>
-              <div className="flex items-center">
-                <MapPin className="h-4 w-4 mr-1" />
-                <span>Localisation précise</span>
               </div>
               <div className="flex items-center">
                 <Phone className="h-4 w-4 mr-1" />
@@ -110,50 +104,57 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <Suspense fallback={<StatsLoading />}>
-            <PharmacyStats />
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="backdrop-blur-sm rounded-2xl lg:rounded-3xl p-6 lg:p-12 mb-8 lg:mb-12 border border-white/20 overflow-hidden">
+          <div className="flex flex-col items-center text-center gap-8 lg:gap-12">
+            {/* Contenu textuel */}
+            <div className="w-full max-w-2xl">
+              <div className="inline-flex items-center bg-gradient-to-r from-emerald-100 to-teal-100 px-4 py-2 rounded-full text-sm font-medium text-emerald-800 mb-6">
+                <Navigation className="h-4 w-4 mr-2" />
+                Service de géolocalisation disponible
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Trouvez votre{" "}
+                <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
+                  pharmacie
+                </span>{" "}
+                la plus proche
+              </h1>
+
+              <p className="text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed">
+                Consultez en temps réel les horaires d'ouverture, la
+                localisation précise, et contactez directement les pharmacies de
+                Harhoura.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <NearestPharmacyButton />
+                <HeroButton />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Liste des pharmacies */}
+      <section className="w-full bg-white py-16 sm:py-20">
+        <div className="container mx-auto px-4">
+          <Suspense fallback={<PharmaciesListSkeleton />}>
+            <div id="pharmacies-list">
+              <PharmaciesList />
+            </div>
           </Suspense>
         </div>
-
-        <Tabs defaultValue="list" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="list" className="flex items-center">
-              <List className="h-4 w-4 mr-2" />
-              Liste des pharmacies
-            </TabsTrigger>
-            <TabsTrigger value="map" className="flex items-center">
-              <MapPin className="h-4 w-4 mr-2" />
-              Carte interactive
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="list">
-            <Suspense fallback={<PharmaciesListSkeleton />}>
-              <PharmaciesList />
-            </Suspense>
-          </TabsContent>
-
-          <TabsContent value="map">
-            <Suspense
-              fallback={
-                <div className="h-96 bg-gray-100 rounded-lg animate-pulse" />
-              }
-            >
-              <PharmaciesMap />
-            </Suspense>
-          </TabsContent>
-        </Tabs>
-      </main>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-16">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-gray-600">
+      <footer className="bg-white border-t mt-8 sm:mt-16">
+        <div className="container mx-auto px-4 py-6 sm:py-8">
+          <div className="text-center text-gray-600 text-sm sm:text-base">
             <p>&copy; 2024 Harhoura.ma - Tous droits réservés</p>
-            <p className="text-sm mt-2">
+            <p className="mt-2 text-xs sm:text-sm">
               Informations mises à jour en temps réel
             </p>
           </div>
@@ -165,29 +166,16 @@ export default function HomePage() {
 
 function PharmaciesListSkeleton() {
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
-          className="bg-white rounded-lg shadow-md p-6 animate-pulse"
+          className="bg-white rounded-lg shadow-md p-4 sm:p-6 animate-pulse"
         >
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-3 sm:mb-4"></div>
           <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
-          <div className="h-3 bg-gray-200 rounded w-2/3 mb-4"></div>
+          <div className="h-3 bg-gray-200 rounded w-2/3 mb-3 sm:mb-4"></div>
           <div className="h-8 bg-gray-200 rounded w-20"></div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function StatsLoading() {
-  return (
-    <div className="grid gap-4 md:grid-cols-4">
-      {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-          <div className="h-8 bg-gray-200 rounded w-3/4"></div>
         </div>
       ))}
     </div>
