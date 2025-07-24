@@ -96,10 +96,10 @@ export default function HomePage() {
                 <Clock className="h-4 w-4 mr-1" />
                 <span>Statut en temps réel</span>
               </div>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <Phone className="h-4 w-4 mr-1" />
                 <span>Contacts directs</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
