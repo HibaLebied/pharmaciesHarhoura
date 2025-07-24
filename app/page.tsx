@@ -150,7 +150,7 @@ export default function HomePage() {
               Pharmacies de garde disponibles à Harhoura
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Localisez en temps réel les pharmacies ouvertes à Harhoura et
+              Localisez en temps les pharmacies ouvertes à Harhoura et
               contactez-les facilement.
             </p>
           </div>
