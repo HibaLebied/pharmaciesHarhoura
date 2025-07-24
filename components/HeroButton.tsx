@@ -18,7 +18,7 @@ export default function HeroButton() {
       onClick={scrollToList}
     >
       <List className="h-5 w-5 mr-2" />
-      Voir la liste
+      Voir la liste des pharmacies
     </Button>
   );
 }

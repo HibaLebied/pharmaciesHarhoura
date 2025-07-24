@@ -1,13 +1,23 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PharmacyForm } from "@/components/pharmacy-form";
-import { Plus, Edit, Trash2, LogOut, Home } from "lucide-react";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  LogOut,
+  Home,
+  CalendarRange,
+  List,
+} from "lucide-react";
 import Link from "next/link";
 import { supabase, type Pharmacy } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { PharmacyStats } from "@/components/pharmacy-stats";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,6 +47,24 @@ export default function AdminPage() {
       fetchPharmacies();
     }
   }, [user]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("pharmacies-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "pharmacies" },
+        (payload) => {
+          console.log("Changement détecté :", payload);
+          fetchPharmacies();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const checkAuth = async () => {
     const {
@@ -125,22 +153,35 @@ export default function AdminPage() {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-green-700">
-                Tableau de bord
-              </h1>
-              <p className="text-gray-600 text-sm">Gestion des pharmacies</p>
+            {/* Bloc gauche : icône + titre */}
+            <div className="flex items-center gap-3">
+              {/* Icône */}
+              <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-emerald-500 rounded-lg shadow-md flex items-center justify-center">
+                <CalendarRange className="w-5 h-5 text-white" />
+              </div>
+              {/* Titre principal */}
+              <div>
+                <h1 className="text-lg md:text-xl font-bold text-gray-900">
+                  Tableau de bord
+                </h1>
+                {/* Sous-titre masqué sur sm/md */}
+                <p className="hidden lg:block text-sm text-gray-600">
+                  Gestion des pharmacies
+                </p>
+              </div>
             </div>
+
+            {/* Boutons */}
             <div className="flex items-center gap-2">
               <Link href="/">
                 <Button variant="outline" size="sm">
-                  <Home className="h-4 w-4 mr-2" />
-                  Accueil
+                  <Home className="h-4 w-4 mr-1" />
+                  <span className="hidden sm:inline">Accueil</span>
                 </Button>
               </Link>
               <Button variant="outline" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Déconnexion
+                <LogOut className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">Déconnexion</span>
               </Button>
             </div>
           </div>
@@ -148,6 +189,11 @@ export default function AdminPage() {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <Suspense fallback={<StatsLoading />}>
+            <PharmacyStats />
+          </Suspense>
+        </div>
         {showForm ? (
           <PharmacyForm
             pharmacy={editingPharmacy || undefined}
@@ -160,7 +206,11 @@ export default function AdminPage() {
         ) : (
           <>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">Liste des pharmacies</h2>
+              <div className="flex items-center gap-3">
+                <List />
+                <h2 className="text-xl font-semibold">Liste des pharmacies</h2>
+              </div>
+
               <Button onClick={() => setShowForm(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Ajouter une pharmacie
@@ -232,6 +282,19 @@ export default function AdminPage() {
           </>
         )}
       </main>
+    </div>
+  );
+}
+
+function StatsLoading() {
+  return (
+    <div className="grid gap-4 md:grid-cols-4">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+          <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+        </div>
+      ))}
     </div>
   );
 }

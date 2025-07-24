@@ -8,24 +8,25 @@ import NearestPharmacyButton from "@/components/NearestPharmacyButton";
 import HeroButton from "@/components/HeroButton";
 
 export const metadata = {
-  title: "Pharmacies Harhoura - Horaires & Localisation en temps réel",
+  title: "Pharmacie de Garde Harhoura | Horaires & Localisation",
   description:
-    "Consultez la liste des pharmacies de Harhoura avec horaires d'ouverture en temps réel, localisation précise et contacts directs.",
+    "Trouvez facilement une pharmacie de garde à Harhoura : horaires en temps réel, localisation sur la carte et contacts directs.",
   keywords: [
-    "pharmacies Harhoura",
-    "pharmacie de garde",
-    "horaires pharmacie",
+    "pharmacie de garde Harhoura",
+    "pharmacie ouverte maintenant Harhoura",
+    "horaires pharmacie Harhoura",
     "localisation pharmacie Harhoura",
-    "pharmacie ouverte Harhoura",
+    "pharmacie urgence Harhoura",
+    "liste pharmacies Harhoura",
     "Harhoura.ma",
   ],
   authors: [{ name: "Harhoura.ma", url: "https://harhoura.ma" }],
   creator: "Harhoura.ma",
   metadataBase: new URL("https://harhoura.ma"),
   openGraph: {
-    title: "Pharmacies Harhoura",
+    title: "Pharmacies de Garde Harhoura - Ouvertes Maintenant",
     description:
-      "Trouvez rapidement les pharmacies ouvertes à Harhoura. Liste complète avec horaires en temps réel et contacts.",
+      "Consultez la liste des pharmacies ouvertes à Harhoura avec horaires à jour et localisation précise.",
     url: "https://harhoura.ma",
     siteName: "Pharmacies Harhoura",
     images: [
@@ -33,7 +34,7 @@ export const metadata = {
         url: "https://harhoura.ma/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Pharmacies Harhoura",
+        alt: "Pharmacies de Garde Harhoura - Ouvertes Maintenant",
       },
     ],
     locale: "fr_FR",
@@ -41,9 +42,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pharmacies Harhoura",
+    title: "Pharmacies de Garde Harhoura",
     description:
-      "Trouvez les pharmacies ouvertes à Harhoura. Liste complète avec horaires mis à jour.",
+      "Trouvez une pharmacie de garde à Harhoura. Horaires et localisation mis à jour en temps réel.",
     images: ["https://harhoura.ma/og-image.png"],
     creator: "@harhoura_ma",
   },
@@ -105,13 +106,16 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-6 sm:py-8">
-        <div className="backdrop-blur-sm rounded-2xl lg:rounded-3xl p-6 lg:p-12 mb-8 lg:mb-12 border border-white/20 overflow-hidden">
+      <section
+        className="container mx-auto px-4 py-6 sm:py-8"
+        aria-label="Section d’introduction et recherche de pharmacie"
+      >
+        <div className="backdrop-blur-sm rounded-2xl lg:rounded-3xl p-6 lg:pt-12 lg:pb-6 lg:px-12 mb-8 lg:mb-12 border border-white/20 overflow-hidden">
           <div className="flex flex-col items-center text-center gap-8 lg:gap-12">
             {/* Contenu textuel */}
             <div className="w-full max-w-2xl">
               <div className="inline-flex items-center bg-gradient-to-r from-emerald-100 to-teal-100 px-4 py-2 rounded-full text-sm font-medium text-emerald-800 mb-6">
-                <Navigation className="h-4 w-4 mr-2" />
+                <Navigation className="h-4 w-4 mr-2" aria-hidden="true" />
                 Service de géolocalisation disponible
               </div>
 
@@ -120,18 +124,18 @@ export default function HomePage() {
                 <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
                   pharmacie
                 </span>{" "}
-                la plus proche
+                la plus proche à Harhoura
               </h1>
 
               <p className="text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed">
                 Consultez en temps réel les horaires d'ouverture, la
                 localisation précise, et contactez directement les pharmacies de
-                Harhoura.
+                garde à Harhoura.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <NearestPharmacyButton />
-                <HeroButton />
+                <NearestPharmacyButton aria-label="Trouver la pharmacie la plus proche" />
+                <HeroButton aria-label="Voir les pharmacies de Harhoura" />
               </div>
             </div>
           </div>
@@ -139,8 +143,18 @@ export default function HomePage() {
       </section>
 
       {/* Liste des pharmacies */}
-      <section className="w-full bg-white py-16 sm:py-20">
+      <section className="bg-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Pharmacies de garde disponibles à Harhoura
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Localisez en temps réel les pharmacies ouvertes à Harhoura et
+              contactez-les facilement.
+            </p>
+          </div>
+
           <Suspense fallback={<PharmaciesListSkeleton />}>
             <div id="pharmacies-list">
               <PharmaciesList />

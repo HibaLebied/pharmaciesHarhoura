@@ -44,7 +44,12 @@ export default function NearestPharmacyButton() {
             console.error("Supabase RPC error:", error.message ?? error);
             setError("Erreur lors de la recherche : " + (error.message ?? ""));
             setNearestPharmacy(null);
-          } else if (!data) {
+          } else if (
+            !data ||
+            (Array.isArray(data) && data.length === 0) ||
+            Object.keys(data).length === 0 ||
+            data.name === null
+          ) {
             // data peut être null si aucune pharmacie trouvée
             setError("Aucune pharmacie ouverte trouvée.");
             setNearestPharmacy(null);
@@ -78,7 +83,9 @@ export default function NearestPharmacyButton() {
         disabled={loading}
         className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
       >
-        {loading ? "Recherche en cours..." : "Pharmacie la plus proche"}
+        {loading
+          ? "Recherche en cours..."
+          : "Trouver la pharmacie la plus proche"}
       </button>
 
       {error && <p className="text-red-500 mt-2">{error}</p>}

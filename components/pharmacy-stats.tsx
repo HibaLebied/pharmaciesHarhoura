@@ -6,6 +6,7 @@ import { pharmacyService } from "@/lib/pharmacy-service";
 import { isPharmacyOpen } from "@/lib/pharmacy-utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, Phone, Store } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export function PharmacyStats() {
   const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
@@ -16,6 +17,24 @@ export function PharmacyStats() {
     // Mettre à jour toutes les minutes
     const interval = setInterval(fetchPharmacies, 60000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("pharmacies-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "pharmacies" },
+        (payload) => {
+          console.log("Changement détecté :", payload);
+          fetchPharmacies();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchPharmacies = async () => {
