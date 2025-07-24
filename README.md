@@ -1,4 +1,4 @@
-# Pharmacies Harhoura
+# Pharmacies Har-houra
 
 Sous-domaine dédié aux pharmacies de Harhoura avec page publique et dashboard administratif.
 
