@@ -31,7 +31,7 @@ export const metadata = {
     siteName: "Pharmacies Harhoura",
     images: [
       {
-        url: "https://harhoura.ma/og-image.png",
+        url: "https://pharmacies-harhoura-temara.vercel.app/og/og-image.png",
         width: 1200,
         height: 630,
         alt: "Pharmacies de Garde Harhoura - Ouvertes Maintenant",
