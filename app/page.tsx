@@ -49,9 +49,9 @@ export const metadata = {
     creator: "@harhoura_ma",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/icons/favicon.ico",
+    apple: "/icons/apple-touch-icon.png",
+    shortcut: "/icons/favicon.ico",
   },
 };
 
