@@ -45,7 +45,7 @@ export const metadata = {
     title: "Pharmacies de Garde Harhoura",
     description:
       "Trouvez une pharmacie de garde à Harhoura. Horaires et localisation mis à jour en temps réel.",
-    images: ["https://harhoura.ma/og-image.png"],
+    images: ["https://pharmacies-harhoura-temara.vercel.app/og/og-image.png"],
     creator: "@harhoura_ma",
   },
   icons: {
@@ -53,6 +53,10 @@ export const metadata = {
     apple: "/icons/apple-touch-icon.png",
     shortcut: "/icons/favicon.ico",
   },
+};
+
+export const viewport = {
+  themeColor: "#0A9D58", // Vert pharmacie
 };
 
 export default function HomePage() {
