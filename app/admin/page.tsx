@@ -132,6 +132,7 @@ export default function AdminPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    localStorage.clear();
     router.push("/admin/login");
   };
 

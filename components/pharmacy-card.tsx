@@ -24,6 +24,7 @@ import CallButton from "./CallButton"; // Nouveau Client Component
 import DirectionsButton from "./DirectionsButton"; // Nouveau Client Component
 import Link from "next/link";
 import ItineraryButton from "./ItineraryButton";
+import { slugify } from "@/lib/slugify";
 
 interface PharmacyCardProps {
   pharmacy: Pharmacy;
@@ -100,7 +101,7 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
         />
 
         <Link
-          href={`/${pharmacy.id}`}
+          href={`/pharmacies/${slugify(pharmacy.name)}`}
           className="flex items-center gap-1 px-3 py-2 rounded-md border text-sm text-gray-700 hover:bg-gray-100"
         >
           <span>Voir plus</span>

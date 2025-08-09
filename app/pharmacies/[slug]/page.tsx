@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { slugify } from "@/lib/slugify";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Phone } from "lucide-react";
@@ -9,42 +10,64 @@ import {
 } from "@/lib/pharmacy-utils";
 import ItineraryButton from "@/components/ItineraryButton";
 
+import { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-
-  const { data: pharmacy } = await supabase
-    .from("pharmacies")
-    .select("name")
-    .eq("id", id)
-    .single();
+  const { slug } = await params;
 
   return {
-    title: pharmacy?.name || "Pharmacie",
-    description: "Détails de la pharmacie et horaires d'ouverture",
+    title: `Pharmacie ${slug.replace(/-/g, " ")}`,
+    description: `Informations et horaires de la pharmacie ${slug.replace(
+      /-/g,
+      " "
+    )}`,
   };
 }
 
 export default async function PharmacyPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  const { data: pharmacy, error } = await supabase
+  // 1. Récupérer toutes les pharmacies
+  const { data: pharmacies, error } = await supabase
     .from("pharmacies")
-    .select("*")
-    .eq("id", id)
-    .single();
+    .select("*");
 
-  if (error || !pharmacy) {
+  if (error) {
+    console.error("Erreur Supabase:", error);
     return notFound();
   }
 
+  if (!pharmacies || pharmacies.length === 0) {
+    console.warn("Aucune pharmacie trouvée dans la base de données");
+    return notFound();
+  }
+
+  // 2. Trouver la pharmacie correspondant au slug
+  const pharmacy = pharmacies.find((ph) => {
+    const pharmacySlug = slugify(ph.name);
+    return pharmacySlug === slug;
+  });
+
+  if (!pharmacy) {
+    console.warn(`Aucune pharmacie trouvée pour le slug: ${slug}`);
+    console.warn(
+      "Slugs disponibles:",
+      pharmacies.map((p) => slugify(p.name))
+    );
+    return notFound();
+  }
+
+  // 3. Calculer les informations dérivées
   const dayStatus = getCurrentDayStatus(pharmacy);
   const { latitude, longitude } = pharmacy;
 
